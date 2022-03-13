@@ -12,8 +12,8 @@ services:
       - .env
     networks:
       service:
-          aliases:
-            - pod
+        aliases:
+          - pod
     environment:
       - ENV=/home/www-data/.ashrc
     volumes:
@@ -60,13 +60,13 @@ services:
     hostname: rabbitmq
     networks:
       - traefik
+      - service
     ports:
       - "25672:5672"
     environment:
       RABBITMQ_DEFAULT_USER: rabbitmq
       RABBITMQ_DEFAULT_PASS: rabbitmq
       RABBITMQ_DEFAULT_VHOST: ${PROJECT_NAME}
-      #RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: -rabbitmq_management load_definitions "/tmp/definitions.json"
     volumes:
       - rabbitmq_volume:/var/lib/rabbitmq/mnesia/rabbit@my-rabbit
     labels:
@@ -83,6 +83,7 @@ services:
     command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
     networks:
       - traefik
+      - service
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik"
@@ -129,5 +130,6 @@ volumes:
 networks:
   service:
     name: ${PROJECT_NAME}
+    external: true
   traefik:
     name: traefik
