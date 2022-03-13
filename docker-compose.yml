@@ -103,7 +103,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./.deployment/docker/containers/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./.deployment/docker/containers/traefik/config.yml:/etc/traefik/config.yml:ro
-      - ./certs:/etc/certs:ro
+      - certs:/etc/ssl/traefik:ro
     networks:
       - traefik
     labels:
