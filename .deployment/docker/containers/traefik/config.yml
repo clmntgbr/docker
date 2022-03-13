@@ -14,5 +14,5 @@ http:
 
 tls:
   certificates:
-    - certFile: "/etc/certs/cert.pem"
-      keyFile: "/etc/certs/key.pem"
+    - certFile: "/etc/ssl/traefik/cert.pem"
+      keyFile: "/etc/ssl/traefik/key.pem"
