@@ -1,0 +1,9 @@
+## Aliases
+
+alias m:c='bin/console make:command'
+alias m:e='bin/console make:entity'
+alias m:m:r='bin/console make:entity --regenerate App'
+alias m:m='bin/console make:migration'
+alias d:m:m='bin/console doctrine:migrations:migrate --no-interaction'
+alias d:s:u='bin/console doctrine:schema:update -f'
+alias d:d:c='bin/console doctrine:database:create'

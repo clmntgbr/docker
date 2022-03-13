@@ -1,0 +1,133 @@
+version: '3.5'
+
+services:
+  php:
+    container_name: ${PROJECT_NAME}_php
+    build:
+      context: .
+      dockerfile: ./.deployment/docker/containers/php/Dockerfile
+    depends_on:
+      - database
+    env_file:
+      - .env
+    networks:
+      service:
+          aliases:
+            - pod
+    environment:
+      - ENV=/home/www-data/.ashrc
+    volumes:
+      - ./:/srv/app/:rw
+      - ./.deployment/docker/containers/php/www.conf:/etc/php8.1.3/php-fpm.conf
+      - ./.deployment/docker/containers/php/php.ini:/etc/php8.1.3/php.ini
+      - ./.deployment/docker/aliases/.ashrc:/home/www-data/.ashrc
+    command: --define opcache.validate_timestamps=On
+
+  nginx:
+    container_name: ${PROJECT_NAME}_nginx
+    depends_on:
+      - php
+    image: nginx:1.20-alpine
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.${PROJECT_NAME}.rule=Host(`${PROJECT_NAME}.docker.localhost`)"
+      - "traefik.http.routers.${PROJECT_NAME}.tls=true"
+      - "traefik.http.services.${PROJECT_NAME}.loadbalancer.server.port=8080"
+    networks:
+      - service
+      - traefik
+    volumes:
+      - ./public:/srv/app/public:ro
+      - ./.deployment/docker/containers/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+
+  database:
+    container_name: ${PROJECT_NAME}_database
+    image: mariadb:10.4.19
+    env_file:
+      - .env
+    networks:
+      - service
+    ports:
+      - 33181:3306
+    volumes:
+      - database_volume:/var/lib/mysql
+
+  rabbitmq:
+    restart: unless-stopped
+    container_name: ${PROJECT_NAME}_rabbitmq
+    image: rabbitmq:3-management
+    hostname: rabbitmq
+    networks:
+      - traefik
+    ports:
+      - "25672:5672"
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      RABBITMQ_DEFAULT_PASS: rabbitmq
+      RABBITMQ_DEFAULT_VHOST: ${PROJECT_NAME}
+      #RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: -rabbitmq_management load_definitions "/tmp/definitions.json"
+    volumes:
+      - rabbitmq_volume:/var/lib/rabbitmq/mnesia/rabbit@my-rabbit
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.${PROJECT_NAME}-rabbitmq.rule=Host(`${PROJECT_NAME}-rabbitmq.docker.localhost`)"
+      - "traefik.http.routers.${PROJECT_NAME}-rabbitmq.tls=true"
+      - "traefik.http.services.${PROJECT_NAME}-rabbitmq.loadbalancer.server.port=15672"
+
+  maildev:
+    restart: unless-stopped
+    container_name: ${PROJECT_NAME}_maildev
+    image: maildev/maildev
+    command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.${PROJECT_NAME}-maildev.rule=Host(`${PROJECT_NAME}-maildev.docker.localhost`)"
+      - "traefik.http.routers.${PROJECT_NAME}-maildev.tls=true"
+      - "traefik.http.services.${PROJECT_NAME}-maildev.loadbalancer.server.port=80"
+
+  traefik:
+    image: traefik:2.4
+    container_name: traefik
+    restart: unless-stopped
+    depends_on:
+      - reverse-proxy-https-helper
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./.deployment/docker/containers/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./.deployment/docker/containers/traefik/config.yml:/etc/traefik/config.yml:ro
+      - ./certs:/etc/certs:ro
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik=true"
+
+  reverse-proxy-https-helper:
+    container_name: ${PROJECT_NAME}_reverse_proxy
+    image: alpine
+    command: sh -c "cd /etc/ssl/traefik
+      && wget traefik.me/cert.pem -O cert.pem
+      && wget traefik.me/privkey.pem -O privkey.pem"
+    volumes:
+      - certs:/etc/ssl/traefik
+    networks:
+      - traefik
+
+volumes:
+  database_volume: {}
+  rabbitmq_volume: {}
+  certs: {}
+
+networks:
+  service:
+    name: ${PROJECT_NAME}
+  traefik:
+    name: traefik
