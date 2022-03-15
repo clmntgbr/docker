@@ -11,11 +11,14 @@ A Symfony 6 docker template base project using PHP8, Nginx, MariaDb, RabbitMQ, M
 4. Run `docker-compose up` (the logs will be displayed in the current shell) or `docker-compose up -d`
 5. Enter in the php container with `docker-compose exec php sh`
 6. Run `composer install`
-7. Open `https://traefik.docker.localhost/dashboard/#/` in your favorite web browser for traefik dashboard
-8. Open `https://docker-maildev.docker.localhost` in your favorite web browser for maildev
-9. Open `https://docker-rabbitmq.docker.localhost` in your favorite web browser for rabbitmq
-10. Open `https://docker.docker.localhost` in your favorite web browser for symfony app
-11. Run `docker-compose down --remove-orphans` to stop the Docker containers.
+7. Run `docker-compose down --remove-orphans` to stop the Docker containers.
+
+## Overview
+
+8. Open `https://traefik.docker.localhost/dashboard/#/` in your favorite web browser for traefik dashboard
+9. Open `https://{docker}-maildev.docker.localhost` in your favorite web browser for maildev
+10. Open `https://{docker}-rabbitmq.docker.localhost` in your favorite web browser for rabbitmq
+11. Open `https://{docker}.docker.localhost` in your favorite web browser for symfony app
 
 ## Features
 
