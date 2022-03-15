@@ -15,8 +15,6 @@ A Symfony 6 docker template base project using PHP8, Nginx, MariaDb, RabbitMQ, M
 
 ## Overview
 
-{docker} depends of your PROJECT_NAME avariable in .env
-
 Open `https://traefik.docker.localhost/dashboard/#/` in your favorite web browser for traefik dashboard
 
 Open `https://{docker}-maildev.docker.localhost` in your favorite web browser for maildev
