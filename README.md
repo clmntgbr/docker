@@ -15,10 +15,15 @@ A Symfony 6 docker template base project using PHP8, Nginx, MariaDb, RabbitMQ, M
 
 ## Overview
 
-8. Open `https://traefik.docker.localhost/dashboard/#/` in your favorite web browser for traefik dashboard
-9. Open `https://{docker}-maildev.docker.localhost` in your favorite web browser for maildev
-10. Open `https://{docker}-rabbitmq.docker.localhost` in your favorite web browser for rabbitmq
-11. Open `https://{docker}.docker.localhost` in your favorite web browser for symfony app
+{docker} depends of your PROJECT_NAME avariable in .env
+
+Open `https://traefik.docker.localhost/dashboard/#/` in your favorite web browser for traefik dashboard
+
+Open `https://{docker}-maildev.docker.localhost` in your favorite web browser for maildev
+
+Open `https://{docker}-rabbitmq.docker.localhost` in your favorite web browser for rabbitmq
+
+Open `https://{docker}.docker.localhost` in your favorite web browser for symfony app
 
 ## Features
 
