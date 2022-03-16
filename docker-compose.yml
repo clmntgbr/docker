@@ -65,7 +65,7 @@ services:
       - "25672:5672"
     environment:
       RABBITMQ_DEFAULT_USER: rabbitmq
-      RABBITMQ_DEFAULT_PASS: rabbitmq
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_USER}
       RABBITMQ_DEFAULT_VHOST: ${PROJECT_NAME}
     volumes:
       - rabbitmq_volume:/var/lib/rabbitmq/mnesia/rabbit@my-rabbit
@@ -93,7 +93,7 @@ services:
 
   traefik:
     image: traefik:2.4
-    container_name: traefik
+    container_name: ${PROJECT_NAME}_traefik
     restart: unless-stopped
     depends_on:
       - reverse-proxy-https-helper
