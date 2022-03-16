@@ -19,7 +19,7 @@ services:
     volumes:
       - ./:/srv/app/:rw
       - ./.deployment/docker/containers/php/www.conf:/etc/php8.1.3/php-fpm.conf
-      - ./.deployment/docker/containers/php/php.ini:/etc/php8.1.3/php.ini
+      - ./.deployment/docker/containers/php/php.ini:/usr/local/etc/php/php.ini
       - ./.deployment/docker/aliases/.ashrc:/home/www-data/.ashrc
     command: --define opcache.validate_timestamps=On
 
