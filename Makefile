@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 DOCKER_COMPOSE = docker-compose -p docker
 
 CONTAINER_NGINX = $$(docker container ls -f "name=docker_nginx" -q)
@@ -73,7 +75,7 @@ create:
 	$(PHP) bin/console doctrine:database:create --if-not-exists
 
 ## Load fixtures
-load:
+fixture:
 	$(PHP) bin/console doctrine:fixtures:load --no-interaction
 
 ## Making migration file
@@ -84,17 +86,9 @@ migration:
 migrate:
 	$(PHP) bin/console doctrine:migration:migrate --no-interaction
 
+## Applying migration
+stan:
+	$(PHP) vendor/bin/phpstan analyse -l 5 src
+
 ## Init project
-init: build start install update drop create migrate
-
-## Updating gas price
-gas-update:
-	$(PHP) bin/console app:gas-price-update
-
-## Searching gas stations on Google Api Details
-gas-details:
-	$(PHP) bin/console app:gas-stations-details
-
-## Starting consumer
-consume:
-	$(PHP) bin/console messenger:consume async_priority_high async_priority_low -vv
+init: install update drop create migrate fixture
