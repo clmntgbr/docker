@@ -6,12 +6,9 @@ A Symfony 6 docker template base project using PHP8, Nginx, MariaDb, RabbitMQ, M
 
 1. Clone this repo
 2. Run `cp .env.dist .env`
-2. Edit the .env file to change PROJECT_NAME variable for renaming containers & directory
-3. Run `docker-compose build --pull --no-cache` to build fresh images
-4. Run `docker-compose up` (the logs will be displayed in the current shell) or `docker-compose up -d`
-5. Enter in the php container with `docker-compose exec php sh`
-6. Run `composer install`
-7. Run `docker-compose down --remove-orphans` to stop the Docker containers.
+3. Edit the .env file to change PROJECT_NAME variable for renaming containers & directory
+4. Run `make init` to initialize the project
+5. You can run `make help` to see all commands available
 
 ## Overview
 
