@@ -87,8 +87,8 @@ migrate:
 	$(PHP) bin/console doctrine:migration:migrate --no-interaction
 
 ## Applying migration
-stan:
-	$(PHP) vendor/bin/phpstan analyse -l 5 src
+migrate:
+	$(PHP) bin/console doctrine:migration:migrate --no-interaction
 
 ## Init project
 init: install update drop create migrate fixture
