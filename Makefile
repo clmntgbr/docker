@@ -41,10 +41,14 @@ build:
 ## Start containers
 start:
 	@$(DOCKER_COMPOSE) up -d
+	@echo "site is available here: https://docker.traefik.me"
+	@echo "admin is available here: https://docker.traefik.me/admin"
 
 ## Stop containers
 stop:
 	@$(DOCKER_COMPOSE) down
+
+restart: stop start
 
 ## Entering php shell
 php:
@@ -76,7 +80,7 @@ create:
 
 ## Load fixtures
 fixture:
-	$(PHP) bin/console doctrine:fixtures:load --no-interaction
+	$(PHP) bin/console hautelook:fixtures:load --env=dev --no-interaction
 
 ## Making migration file
 migration:
@@ -86,9 +90,16 @@ migration:
 migrate:
 	$(PHP) bin/console doctrine:migration:migrate --no-interaction
 
-## Applying migration
-migrate:
-	$(PHP) bin/console doctrine:migration:migrate --no-interaction
-
 ## Init project
 init: install update drop create migrate fixture
+
+npm-install: 
+	$(PHP) npm install
+
+npm-build: 
+	$(PHP) npm run build
+
+front: npm-install npm-build
+
+## Init project
+init-db: drop create migrate fixture

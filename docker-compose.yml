@@ -31,7 +31,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik"
-      - "traefik.http.routers.${PROJECT_NAME}.rule=Host(`${PROJECT_NAME}.docker.localhost`)"
+      - "traefik.http.routers.${PROJECT_NAME}.rule=Host(`${PROJECT_NAME}.traefik.me`)"
       - "traefik.http.routers.${PROJECT_NAME}.tls=true"
       - "traefik.http.services.${PROJECT_NAME}.loadbalancer.server.port=8080"
     networks:
