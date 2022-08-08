@@ -29,6 +29,6 @@ Open `https://docker.traefik.me` in your favorite web browser for symfony app
 * MariaDB 10.4.19
 * MailDev
 * Traefik latest
-* Symfony 6.0.5
+* Symfony 6.1.3
 
 **Enjoy!**
