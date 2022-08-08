@@ -7,19 +7,19 @@ A Symfony 6 docker template base project using PHP8, Nginx, MariaDb, RabbitMQ, M
 1. Clone https://github.com/clmntgbr/setup and run `make start`
 2. Clone this repo
 3. Run `cp .env.dist .env`
-4. Edit the .env file to change PROJECT_NAME variable for renaming containers & directory
+4. Edit the .env file to change PROJECT_NAME variable for renaming containers & directory // Replace 'docker' by your project name in the Makefile
 5. Run `make init` to initialize the project
 6. You can run `make help` to see all commands available
 
 ## Overview
 
-Open `https://docker.localhost/dashboard/#/` in your favorite web browser for traefik dashboard
+Open `https://traefik.traefik.me/dashboard/#/` in your favorite web browser for traefik dashboard
 
-Open `https://maildev.docker.localhost` in your favorite web browser for maildev
+Open `https://maildev.traefik.me` in your favorite web browser for maildev
 
-Open `https://rabbitmq.docker.localhost` in your favorite web browser for rabbitmq
+Open `https://rabbitmq.traefik.me` in your favorite web browser for rabbitmq
 
-Open `https://{docker}.docker.localhost` in your favorite web browser for symfony app
+Open `https://docker.traefik.me` in your favorite web browser for symfony app
 
 ## Features
 
@@ -29,6 +29,6 @@ Open `https://{docker}.docker.localhost` in your favorite web browser for symfon
 * MariaDB 10.4.19
 * MailDev
 * Traefik latest
-* Symfony 6.0.5 with some bundles : `symfony/maker-bundle`, `symfony/web-profiler-bundle`, `symfony/messenger`, etc
+* Symfony 6.0.5
 
 **Enjoy!**
