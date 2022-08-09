@@ -1,6 +1,6 @@
 # Symfony Docker Template
 
-A Symfony 6 docker template base project using PHP8, Nginx, MariaDb, RabbitMQ, MailDev.
+A Symfony 6.1 docker template base project using PHP8.1, Nginx, MariaDb, RabbitMQ, MailDev.
 
 ## Getting Started
 
