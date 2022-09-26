@@ -38,6 +38,9 @@ kill:
 build:
 	@$(DOCKER_COMPOSE) build --pull --no-cache
 
+## Init project
+init: install update
+
 ## Start containers
 start:
 	@$(DOCKER_COMPOSE) up -d
