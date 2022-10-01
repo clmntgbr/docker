@@ -12,9 +12,13 @@
         "symfony/flex": "^2",
         "symfony/framework-bundle": "6.1.*",
         "symfony/runtime": "6.1.*",
-        "symfony/yaml": "6.1.*"
+        "symfony/yaml": "6.1.*",
+        "thecodingmachine/safe": "^2.3"
     },
     "require-dev": {
+        "symfony/maker-bundle": "^1.46",
+        "symfony/web-profiler-bundle": "6.1.*",
+        "thecodingmachine/phpstan-safe-rule": "^1.2"
     },
     "config": {
         "allow-plugins": {

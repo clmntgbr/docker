@@ -13,3 +13,5 @@
 .env
 /config/jwt/*.pem
 ###< symfony/framework-bundle ###
+
+.php-cs-fixer.cache

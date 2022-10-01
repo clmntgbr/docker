@@ -51,10 +51,14 @@ services:
     ports:
       - 33182:3306
     volumes:
-      - database_volume:/var/lib/mysql
+      - database_docker:/var/lib/mysql
+
+  qa:
+    container_name: ${PROJECT_NAME}_qa
+    image: jakzal/phpqa:latest
 
 volumes:
-  database_volume: {}
+  database_docker: {}
   certs: {}
 
 networks:

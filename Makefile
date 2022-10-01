@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
-DOCKER_COMPOSE = docker-compose -p docker
+PROJECT_NAME = alert
 
-CONTAINER_NGINX = $$(docker container ls -f "name=docker_nginx" -q)
-CONTAINER_PHP = $$(docker container ls -f "name=docker_php" -q)
-CONTAINER_DB = $$(docker container ls -f "name=docker_database" -q)
+DOCKER_COMPOSE = docker-compose -p $(PROJECT_NAME)
+
+CONTAINER_NGINX = $$(docker container ls -f "name=$(PROJECT_NAME)_nginx" -q)
+CONTAINER_PHP = $$(docker container ls -f "name=$(PROJECT_NAME)_php" -q)
+CONTAINER_DB = $$(docker container ls -f "name=$(PROJECT_NAME)_database" -q)
 
 NGINX = docker exec -ti $(CONTAINER_NGINX)
 PHP = docker exec -ti $(CONTAINER_PHP)
@@ -72,3 +74,16 @@ install:
 ## Composer update
 update:
 	$(PHP) composer update
+
+## QA
+cs-fixer:
+	docker run --init -it --rm -v $(PWD):/project -w /project jakzal/phpqa php-cs-fixer fix ./src --rules=@Symfony
+
+cs-fixer-dry:
+	docker run --init -it --rm -v $(PWD):/project -w /project jakzal/phpqa php-cs-fixer fix ./src --rules=@Symfony --dry-run
+
+phpcpd:
+	docker run --init -it --rm -v $(PWD):/project -w /project jakzal/phpqa phpcpd ./src
+
+phpstan:
+	docker run --init -it --rm -v $(PWD):/project -w /project jakzal/phpqa phpstan analyse ./src --level=5
