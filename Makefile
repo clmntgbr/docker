@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PROJECT_NAME = alert
+PROJECT_NAME = docker
 
 DOCKER_COMPOSE = docker-compose -p $(PROJECT_NAME)
 
