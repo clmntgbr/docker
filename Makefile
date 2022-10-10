@@ -46,8 +46,8 @@ init: install update
 ## Start containers
 start:
 	@$(DOCKER_COMPOSE) up -d
-	@echo "site is available here: https://docker.traefik.me"
-	@echo "admin is available here: https://docker.traefik.me/admin"
+	@echo "site is available here: https://$(PROJECT_NAME).traefik.me"
+	@echo "admin is available here: https://$(PROJECT_NAME).traefik.me/admin"
 
 ## Stop containers
 stop:
