@@ -24,12 +24,12 @@ Open `https://back.traefik.me` in your favorite web browser for symfony app
 
 ## Features
 
-* PHP 8.1.3
+* PHP 8.3.2
 * Nginx 1.20
 * RabbitMQ 3-management
 * MariaDB 10.4.19
 * MailDev
 * Traefik latest
-* Symfony 6.1.3
+* Symfony 7.0.2
 
 **Enjoy!**
