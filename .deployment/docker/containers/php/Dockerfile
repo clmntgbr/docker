@@ -2,13 +2,14 @@ ARG PHP_VERSION=8.1.3
 
 FROM php:${PHP_VERSION}-fpm-alpine as symfony_php
 
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 RUN apk add bash
 RUN apk add git
 RUN apk add nodejs
 RUN apk add npm
 RUN wget https://get.symfony.com/cli/installer -O - | bash && mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV PATH="${PATH}:/root/.composer/vendor/bin"
 
@@ -52,7 +53,7 @@ RUN set -xe \
     && rm -rf /tmp/* /usr/local/lib/php/doc/* /var/cache/apk/*;
 
 
-ENV EXT_AMQP_VERSION=master
+ENV EXT_AMQP_VERSION=latest
 
 RUN docker-php-source extract \
     && apk -Uu add git rabbitmq-c-dev \
@@ -68,8 +69,8 @@ ENV COMPOSER_HOME /tmp
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 RUN find /tmp -type d -exec chmod -v 1777 {} +
 
-#RUN chown -R www-data:www-data /srv/app
-#USER www-data
+# RUN chown -R www-data:www-data /srv/app
+# USER www-data
 
 COPY assets assets
 
@@ -80,5 +81,7 @@ COPY public public
 COPY config config
 COPY migrations migrations
 COPY src src
+
+CMD chmod -R 777 public/images
 
 ENTRYPOINT ["php-fpm"]

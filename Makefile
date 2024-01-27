@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PROJECT_NAME = docker
+PROJECT_NAME = back
 
 DOCKER_COMPOSE = docker-compose -p $(PROJECT_NAME)
 
@@ -46,14 +46,20 @@ init: install update
 ## Start containers
 start:
 	@$(DOCKER_COMPOSE) up -d
-	@echo "site is available here: https://$(PROJECT_NAME).traefik.me"
-	@echo "admin is available here: https://$(PROJECT_NAME).traefik.me/admin"
+	@echo "admin is available here: 'https://back.traefik.me'"
 
 ## Stop containers
 stop:
 	@$(DOCKER_COMPOSE) down
 
 restart: stop start
+
+## Init project
+init: install update
+
+
+cache:
+	$(PHP) rm -r var/cache
 
 ## Entering php shell
 php:

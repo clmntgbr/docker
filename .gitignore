@@ -13,3 +13,7 @@
 ###< symfony/framework-bundle ###
 
 .php-cs-fixer.cache
+
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###
