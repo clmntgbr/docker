@@ -20,7 +20,7 @@ Open `https://maildev.traefik.me` in your favorite web browser for maildev
 
 Open `https://rabbitmq.traefik.me` in your favorite web browser for rabbitmq
 
-Open `https://docker.traefik.me` in your favorite web browser for symfony app
+Open `https://back.traefik.me` in your favorite web browser for symfony app
 
 ## Features
 
