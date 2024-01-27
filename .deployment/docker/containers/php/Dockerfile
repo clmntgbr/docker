@@ -1,4 +1,4 @@
-ARG PHP_VERSION=8.1.3
+ARG PHP_VERSION=8.3.2
 
 FROM php:${PHP_VERSION}-fpm-alpine as symfony_php
 
