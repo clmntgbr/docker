@@ -69,8 +69,8 @@ ENV COMPOSER_HOME /tmp
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 RUN find /tmp -type d -exec chmod -v 1777 {} +
 
-# RUN chown -R www-data:www-data /srv/app
-# USER www-data
+RUN chown -R 1001:1001 /srv/app
+USER 1001
 
 COPY assets assets
 
