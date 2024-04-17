@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PROJECT_NAME = back
+PROJECT_NAME = docker
 
 DOCKER_COMPOSE = docker-compose -p $(PROJECT_NAME)
 
@@ -46,7 +46,9 @@ init: install update
 ## Start containers
 start:
 	@$(DOCKER_COMPOSE) up -d
-	@echo "admin is available here: 'https://back.traefik.me'"
+	@echo "App is here: 'http://localhost:8000'"
+	@echo "RabbitMQ is here: 'http://localhost:8003'"
+	@echo "MailDev is here: 'http://localhost:8004'"
 
 ## Stop containers
 stop:

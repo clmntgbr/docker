@@ -32,16 +32,11 @@ services:
       - HTTPS_METHOD=noredirect
     networks:
       - service
-      - traefik
     volumes:
       - ./public:/srv/app/public:ro
       - ./.deployment/docker/containers/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=traefik"
-      - "traefik.http.routers.${PROJECT_NAME}.rule=Host(`back.traefik.me`)"
-      - "traefik.http.routers.${PROJECT_NAME}.tls=true"
-      - "traefik.http.services.${PROJECT_NAME}.loadbalancer.server.port=8080"
+    ports:
+      - "8000:8080"
 
   database:
     container_name: ${PROJECT_NAME}_database
@@ -50,23 +45,46 @@ services:
       - .env
     networks:
       - service
-    ports:
-      - 33182:3306
     volumes:
       - database_docker:/var/lib/mysql
+    ports:
+      - "8001:3306"
 
-  qa:
-    container_name: ${PROJECT_NAME}_qa
-    image: jakzal/phpqa:latest
+  rabbitmq:
+    restart: unless-stopped
+    container_name: ${PROJECT_NAME}_rabbitmq
+    image: rabbitmq:3-management
+    hostname: rabbitmq
+    networks:
+      - service
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
+      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_VHOST}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
+      RABBITMQ_VHOST: ${RABBITMQ_VHOST}
+    volumes:
+      - rabbitmq_volume:/var/lib/rabbitmq/mnesia/rabbit@my-rabbit
+    ports:
+      - "8002:5672"
+      - "8003:15672"
+
+  maildev:
+    restart: unless-stopped
+    container_name: ${PROJECT_NAME}_maildev
+    image: maildev/maildev
+    command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
+    networks:
+      - service
+    ports:
+      - "8004:80"
+      - "8005:25"
 
 volumes:
+  rabbitmq_volume: {}
   database_docker: {}
-  certs: {}
 
 networks:
   service:
     name: service
-    external: true
-  traefik:
-    name: traefik
-    external: true
