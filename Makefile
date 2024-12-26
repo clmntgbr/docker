@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 
 PROJECT_NAME = docker
+DOCKER_COMPOSE = docker compose -p $(PROJECT_NAME)
 
-DOCKER_COMPOSE = docker-compose -p $(PROJECT_NAME)
-
-CONTAINER_NGINX = $$(docker container ls -f "name=$(PROJECT_NAME)_nginx" -q)
-CONTAINER_PHP = $$(docker container ls -f "name=$(PROJECT_NAME)_php" -q)
-CONTAINER_DB = $$(docker container ls -f "name=$(PROJECT_NAME)_database" -q)
+CONTAINER_NGINX = $$(docker container ls -f "name=$(PROJECT_NAME)-nginx" -q)
+CONTAINER_PHP = $$(docker container ls -f "name=$(PROJECT_NAME)-php" -q)
+CONTAINER_DB = $$(docker container ls -f "name=$(PROJECT_NAME)-database" -q)
 
 NGINX = docker exec -ti $(CONTAINER_NGINX)
 PHP = docker exec -ti $(CONTAINER_PHP)
@@ -46,9 +45,6 @@ init: install update
 ## Start containers
 start:
 	@$(DOCKER_COMPOSE) up -d
-	@echo "App is here: 'http://localhost:8000'"
-	@echo "RabbitMQ is here: 'http://localhost:8003'"
-	@echo "MailDev is here: 'http://localhost:8004'"
 
 ## Stop containers
 stop:
@@ -81,17 +77,4 @@ install:
 
 ## Composer update
 update:
-	$(PHP) composer update
-
-## QA
-cs-fixer:
-	docker run --init -it --rm -v $(PWD):/project -w /project jakzal/phpqa php-cs-fixer fix ./src --rules=@Symfony
-
-cs-fixer-dry:
-	docker run --init -it --rm -v $(PWD):/project -w /project jakzal/phpqa php-cs-fixer fix ./src --rules=@Symfony --dry-run
-
-phpcpd:
-	docker run --init -it --rm -v $(PWD):/project -w /project jakzal/phpqa phpcpd ./src
-
-phpstan:
-	docker run --init -it --rm -v $(PWD):/project -w /project jakzal/phpqa phpstan analyse ./src --level=5
+	$(PHP) composer update --rm -v $(PWD):/project -w /project jakzal/phpqa phpstan analyse ./src --level=5
