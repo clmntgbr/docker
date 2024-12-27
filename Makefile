@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-PROJECT_NAME = docker
+include .env
+export $(shell sed 's/=.*//' .env)
+
 DOCKER_COMPOSE = docker compose -p $(PROJECT_NAME)
 
 CONTAINER_NGINX = $$(docker container ls -f "name=$(PROJECT_NAME)-nginx" -q)
