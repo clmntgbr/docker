@@ -1,0 +1,14 @@
+framework:
+    messenger:
+        transports:
+            default:
+                dsn: "%env(MESSENGER_TRANSPORT_DSN)%"
+                options:
+                    exchange:
+                        name: messages
+                        type: direct
+                    auto_setup: true
+                    queues:
+                        default:
+                            binding_keys: [ default ]
+        routing:

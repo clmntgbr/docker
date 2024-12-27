@@ -11,26 +11,6 @@ NGINX = docker exec -ti $(CONTAINER_NGINX)
 PHP = docker exec -ti $(CONTAINER_PHP)
 DATABASE = docker exec -ti $(CONTAINER_DB)
 
-COLOR_RESET			= \033[0m
-COLOR_ERROR			= \033[31m
-COLOR_INFO			= \033[32m
-COLOR_COMMENT		= \033[33m
-COLOR_TITLE_BLOCK	= \033[0;44m\033[37m
-
-help:
-	@printf "${COLOR_TITLE_BLOCK}Makefile${COLOR_RESET}\n"
-	@printf "\n"
-	@printf "${COLOR_COMMENT}Usage:${COLOR_RESET}\n"
-	@printf " make [target]\n\n"
-	@printf "${COLOR_COMMENT}Available targets:${COLOR_RESET}\n"
-	@awk '/^[a-zA-Z\-\_0-9\@]+:/ { \
-		helpLine = match(lastLine, /^## (.*)/); \
-		helpCommand = substr($$1, 0, index($$1, ":")); \
-		helpMessage = substr(lastLine, RSTART + 3, RLENGTH); \
-		printf " ${COLOR_INFO}%-16s${COLOR_RESET} %s\n", helpCommand, helpMessage; \
-	} \
-	{ lastLine = $$0 }' $(MAKEFILE_LIST)
-
 ## Kill all containers
 kill:
 	@$(DOCKER_COMPOSE) kill $(CONTAINER) || true
@@ -53,8 +33,7 @@ stop:
 restart: stop start
 
 ## Init project
-init: install update
-
+init: install update fabric
 
 cache:
 	$(PHP) rm -r var/cache
@@ -77,4 +56,7 @@ install:
 
 ## Composer update
 update:
-	$(PHP) composer update --rm -v $(PWD):/project -w /project jakzal/phpqa phpstan analyse ./src --level=5
+	$(PHP) composer update
+
+fabric: 
+	$(PHP) bin/console messenger:setup-transports
